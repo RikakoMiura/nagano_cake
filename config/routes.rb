@@ -2,6 +2,13 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: "public/homes#top"
   get '/about' => 'public/homes#about'
+  get '/customers' => 'public/customers#show'
+  get '/customers/edit' => 'public/customers#edit'
+  post '/customers/confirm' => 'public/customers#confirm'
+
+  delete '/cart_items' => 'public/cart_items#destroy_all'
+  post '/orders/confirm' => 'public/orders#confirm'
+  get '/orders/thanks' => 'public/orders#thanks'
 
   get '/admin' => 'admin/homes#top'
 
@@ -11,16 +18,12 @@ Rails.application.routes.draw do
     resources :items,only:[:index,:new,:create,:show,:edit,:update]
     resources :order_details,only:[:update]
     resources :orders,only:[:show,:update]
-    resources :sessions,only:[:new,:create,:destroy]
   end
-  namespace :public do
+  scope module: 'public' do
     resources :addresses,only:[:index,:edit,:create,:update,:destroy]
-    resources :cart_items,only:[:index,:update,:destroy,:destroy_all,:create]
-    resources :customers,only:[:show,:edit,:update,:confirm]
+    resources :cart_items,only:[:index,:update,:destroy,:create]
     resources :items,only:[:index,:show]
     resources :orders,only:[:new,:confirm,:thanks,:create,:index,:show]
-    resources :registrations,only:[:new,:create]
-    resources :sessions,only:[:new,:create,:destroy]
   end
 
 end
